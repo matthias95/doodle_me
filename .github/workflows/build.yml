@@ -21,7 +21,7 @@ jobs:
           echo ${DEPLOY_TOKEN}
           echo ${GITHUB_REPOSITORY}
           git clone https://${DEPLOY_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-          cd test_repo
+          cd doodle_me
           git config --global user.name "$(git --no-pager log --format=format:'%an' -n 1)"
           git config --global user.email "$(git --no-pager log --format=format:'%ae' -n 1)"
           git checkout gh_pages
