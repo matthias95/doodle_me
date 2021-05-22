@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: build
+        run: ./dockerenv.sh make c_functions.js
+        
+      - name: deploy
+        run: |
+          echo ${DEPLOY_TOKEN}
+          echo ${GITHUB_REPOSITORY}
+          git clone https://${DEPLOY_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+          cd test_repo
+          git config --global user.name "$(git --no-pager log --format=format:'%an' -n 1)"
+          git config --global user.email "$(git --no-pager log --format=format:'%ae' -n 1)"
+          git checkout gh_pages
+          rm -rf ./docs
+          mkdir -p ./docs
+          cp -a ../html/. ./docs
+          git add -A 
+          git commit -m 'Automatic commit' || true
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.github_token }}
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
