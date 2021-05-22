@@ -1,4 +1,5 @@
 .vscode
 docker_image
 sslcert
-html
+c_functions.js
+c_functions.wasm
