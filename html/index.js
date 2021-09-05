@@ -5,7 +5,7 @@ function rasterize_img(image_data_source, image_data_destination) {
     bufferIn.set(image_data_source.data);
     
     let max_val = Number($('#max_val_slider').val())/100.0;
-    let marker_size = (Number($('#marker_size_slider').val())/100.0)*20;
+    let marker_size = (Number($('#marker_size_slider').val())/100.0)*20 * (getSelectedSize() / (256*3));
     
     wasmModule._rasterize_img_tiled_uint8(bufferPointerIn, image_data_source.height, image_data_source.width, bufferPointerOut, image_data_destination.height, image_data_destination.width, max_val, marker_size, 80, 40);
     
@@ -115,7 +115,7 @@ function showDownloadModal(){
   loading_modal.modal('show');
 }
 
-function processImage(imageBitmap) {
+function getSelectedSize() {
   switch($('input[name="select_size"]:checked').val()){
     case 'S':
       var width = 256*2;
@@ -130,6 +130,11 @@ function processImage(imageBitmap) {
       var width = 256*5;
       break
   }
+  return width;
+}
+
+function processImage(imageBitmap) {
+  var width = getSelectedSize();
   
   var height = imageBitmap.height * (width / imageBitmap.width);
 

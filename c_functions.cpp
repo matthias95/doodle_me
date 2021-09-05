@@ -126,7 +126,7 @@ Matrix<float> get_sobel_mat_x(int k_size){
             const int y = row - center;
             const int x = col - center;
             if(x!=0 || y!=0){
-                sobel_mat(row,col) = x / (y*y + x*x);
+                sobel_mat(row,col) = x / static_cast<float>(y*y + x*x);
             } else {
                 sobel_mat(row,col) = 0;
             }
@@ -143,7 +143,7 @@ Matrix<float> get_sobel_mat_y(int k_size){
             const int y = row - center;
             const int x = col - center;
             if(x!=0 || y!=0){
-                sobel_mat(row,col) = y / (y*y + x*x);
+                sobel_mat(row,col) = y / static_cast<float>(y*y + x*x);
             } else {
                 sobel_mat(row,col) = 0;
             }
